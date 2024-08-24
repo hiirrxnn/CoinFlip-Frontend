@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserProvider, Contract,formatUnits, parseUnits } from "ethers"; // Import Contract to interact with smart contract
 
-const COINFLIP_CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3"; // Replace with your contract address
+const COINFLIP_CONTRACT_ADDRESS = "0x5951980d994948898EA633901bC21A9BE01dE7C3"; // Replace with your contract address
 const COINFLIP_ABI = [
   {
     "inputs": [],
