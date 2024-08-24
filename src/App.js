@@ -79,6 +79,8 @@ function App() {
   const [contract, setContract] = useState(null);
   const [balance, setBalance] = useState(null);
   const [account, setAccount] = useState(null);
+  const [txHash, setTxHash] = useState(""); // Store transaction hash
+  const [betResult, setBetResult] = useState(""); // Store bet result
 
   // Function to connect wallet and set up contract
   async function connectWallet() {
@@ -92,9 +94,6 @@ function App() {
 
       const Balance = await newProvider.getBalance(Account); // Get the balance for that address
       setBalance(formatUnits(Balance, 18)); // Format balance from wei to ether
-  
-      console.log(`Connected account: ${Account}`);
-      console.log(`Balance: ${formatUnits(Balance, 18)} ETH`);
   
       setProvider(newProvider);
       setSigner(newSigner);
@@ -116,13 +115,24 @@ function App() {
       alert("Please connect wallet and enter bet amount.");
       return;
     }
-
+  
     try {
       const betInEther = parseUnits(betAmount, "ether"); // Parse the bet amount to wei
+
+      // Listen for the CoinFlipped event before making the transaction
+      contract.once("CoinFlipped", (player, amount, won) => {
+        if (player.toLowerCase() === account.toLowerCase()) {
+          const resultMessage = won ? "Congratulations, you won the bet!" : "Sorry, you lost the bet.";
+          setBetResult(resultMessage); // Set the bet result in the state
+          console.log(`Player: ${player}, Amount: ${formatUnits(amount, "ether")} ETH, Won: ${won}`);
+        }
+      });
+
+      // Execute the flip transaction
       const tx = await contract.flip(isHeads, { value: betInEther });
+      setTxHash(tx.hash); // Capture and store the transaction hash
       await tx.wait(); // Wait for transaction to be confirmed
 
-      alert("Coin flipped! Check the result on-chain.");
     } catch (err) {
       console.error("Error flipping the coin:", err);
       alert("Transaction failed.");
@@ -181,6 +191,28 @@ function App() {
             Flip Tails
           </button>
         </div>
+
+        {/* Display Etherscan link after the transaction */}
+        {txHash && (
+          <div className="text-center mt-4">
+            <p className="text-lg">Transaction confirmed! View it on Etherscan:</p>
+            <a
+              href={`https://sepolia.etherscan.io/tx/${txHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-300 underline"
+            >
+              View Transaction
+            </a>
+          </div>
+        )}
+
+        {/* Display bet result */}
+        {betResult && (
+          <div className="text-center mt-4">
+            <p className="text-lg">{betResult}</p>
+          </div>
+        )}
       </main>
 
       <footer className="w-full py-6 bg-gray-900 text-gray-400">
