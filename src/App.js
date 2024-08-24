@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserProvider, Contract, formatUnits, parseUnits } from "ethers"; 
 
-const COINFLIP_CONTRACT_ADDRESS = "0xe1dE7Dc4cE7211707E9e55cBF6B4aD43a33A7d29"; 
+const COINFLIP_CONTRACT_ADDRESS = "0x14220f1812eB4f224F5758B0EdFeF8F612A5EDCC"; 
 const COINFLIP_ABI = [
   {
     "inputs": [],
