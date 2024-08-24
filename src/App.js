@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BrowserProvider, Contract,formatUnits, parseUnits } from "ethers"; // Import Contract to interact with smart contract
 
-const COINFLIP_CONTRACT_ADDRESS = "0x5951980d994948898EA633901bC21A9BE01dE7C3"; // Replace with your contract address
+const COINFLIP_CONTRACT_ADDRESS = "0x3f794878A92cCF2220f4a33824e83D0ba1C043E9"; // Replace with your contract address
 const COINFLIP_ABI = [
   {
     "inputs": [],
@@ -70,7 +70,7 @@ const COINFLIP_ABI = [
     "stateMutability": "payable",
     "type": "receive"
   },
-  "function flip(bool _guess) public payable returns (bool)",
+  // "function flip(bool _guess) public payable returns (bool)",
 ];
 
 function App() {
